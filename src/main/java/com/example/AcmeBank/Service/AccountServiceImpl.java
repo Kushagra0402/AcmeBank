@@ -32,14 +32,14 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public TransferResponseDTO transferBalance(TransferRequestDTO transferRequestDTO){
-
-
         String debitAccountNumber=transferRequestDTO.getDebitAccountNumber();
         String creditAccountNumber=transferRequestDTO.getCreditAccountNumber();
         Double amount=transferRequestDTO.getTransferAmount();
         Account debitAccount=accountRepository.findByAccountNumber(debitAccountNumber).orElseThrow(()->new CustomException("Debit Account Not Found"));
         Account creditAccount=accountRepository.findByAccountNumber(creditAccountNumber).orElseThrow(()->new CustomException("Credit Account Not Found"));
         Double balanceOfDebitAccount= getBalance(debitAccountNumber).getBalance();
+
+        //Different checks before executing the transaction
         if(balanceOfDebitAccount<amount){
             throw new CustomException("Balance of debit account is not enough");
         }
@@ -50,7 +50,10 @@ public class AccountServiceImpl implements AccountService {
             throw new CustomException("Transfer cannot be done between same account numbers");
         }
 
+        //Executing the transaction
         Boolean transactionResponse=doTransaction(debitAccount,creditAccount,amount);
+
+        //Successful Transaction will return updated balances.
         if(transactionResponse){
             BalanceDTO debitAccountResponse=new BalanceDTO(debitAccount.getAccountNumber(), debitAccount.getBalance());
             BalanceDTO creditAccountResponse=new BalanceDTO(creditAccount.getAccountNumber(),creditAccount.getBalance());
@@ -62,11 +65,15 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
+
+    //Transactional Annotation to only execute if every statement within the function executes, i.e. provide atomicity.
     @Transactional
     public Boolean doTransaction(
        Account debitAccount, Account creditAccount, Double amount
     ){
         try {
+
+            //Updating the balances of accounts in the transaction.
             debitAccount.setBalance(debitAccount.getBalance() - amount);
             creditAccount.setBalance(creditAccount.getBalance() + amount);
             accountRepository.save(debitAccount);
