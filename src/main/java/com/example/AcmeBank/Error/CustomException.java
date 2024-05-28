@@ -4,5 +4,8 @@ package com.example.AcmeBank.Error;
             super(message);
         }
 
+        public CustomException(String message,Throwable cause){
+            super(message, cause);
+        }
     }
 

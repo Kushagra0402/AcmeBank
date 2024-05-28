@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AcmeBankApplication {
 
 	public static void main(String[] args) {
-		System.out.println("Acme application startss");
+		System.out.println("Acme application starts");
 		SpringApplication.run(AcmeBankApplication.class, args);
 	}
 

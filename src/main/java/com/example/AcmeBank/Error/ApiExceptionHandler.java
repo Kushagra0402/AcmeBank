@@ -11,12 +11,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ApiExceptionHandler {
 
     @ExceptionHandler(value={CustomException.class})
-    public ResponseEntity<String> handleApiRequestException(CustomException customException){
+    public ResponseEntity<Object> handleApiRequestException(CustomException customException){
        ExceptionBody exceptionBody=  new ExceptionBody(
                 customException.getMessage(),
                 HttpStatus.BAD_REQUEST
         );
-
-       return ResponseEntity.status(exceptionBody.getHttpStatus()).body(exceptionBody.getMessage());
+       return new ResponseEntity<>(exceptionBody,exceptionBody.getHttpStatus());
     }
 }
