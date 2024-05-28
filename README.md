@@ -4,6 +4,8 @@ The application can build and run on maven or gradle with one click, when using 
 
 to run the H2-Database console on browser, try going to:http://localhost:8080/h2-console on browser. and signing in with the credentials provided in the applications.properties file, including the JDBC URL, username and password mentioned in the file. 
 
+The tests have been written in the AccountServiceTest.java file.
+
 1. Check Balance API
 For calling the balance api, kindly follow the given format:
 
