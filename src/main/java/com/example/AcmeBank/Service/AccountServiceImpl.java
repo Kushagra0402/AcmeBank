@@ -38,10 +38,12 @@ public class AccountServiceImpl implements AccountService {
         String debitAccountNumber=transferRequestDTO.getDebitAccountNumber();
         String creditAccountNumber=transferRequestDTO.getCreditAccountNumber();
         Double amount=transferRequestDTO.getTransferAmount();
+        Account debitAccount=accountRepository.findByAccountNumber(debitAccountNumber).orElseThrow(()->new CustomException("Debit Account Not Found"));
+        Account creditAccount=accountRepository.findByAccountNumber(creditAccountNumber).orElseThrow(()->new CustomException("Credit Account Not Found"));
         Double balanceOfDebitAccount= getBalance(debitAccountNumber).getBalance();
         System.out.println("balance of debit account"+balanceOfDebitAccount);
         if(balanceOfDebitAccount<amount){
-            throw new CustomException("Balance of account is not enough");
+            throw new CustomException("Balance of debit account is not enough");
         }
         if(amount<=0.00){
             throw new CustomException("Transfer amount must not be less than or equal to 0.0");
@@ -49,8 +51,6 @@ public class AccountServiceImpl implements AccountService {
         if(debitAccountNumber.equals(creditAccountNumber)){
             throw new CustomException("Transfer cannot be done between same account numbers");
         }
-        Account debitAccount=accountRepository.findByAccountNumber(debitAccountNumber).orElseThrow(()->new CustomException("Debit Account Not Found"));
-        Account creditAccount=accountRepository.findByAccountNumber(creditAccountNumber).orElseThrow(()->new CustomException("Credit Account Not Found"));
 
         Boolean transactionResponse=doTransaction(debitAccount,creditAccount,amount);
         if(transactionResponse){

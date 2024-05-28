@@ -106,7 +106,7 @@ public class AccountServiceTest {
         String debitAccountNumber = "123456789";
         String creditAccountNumber = "987654321";
         Double transferAmount = 1500.0;
-        String errorMessage="Balance of account is not enough";
+        String errorMessage="Balance of debit account is not enough";
 
         Account debitAccount = new Account();
         debitAccount.setAccountNumber(debitAccountNumber);
@@ -119,6 +119,7 @@ public class AccountServiceTest {
 
 
         Mockito.when(accountRepository.findByAccountNumber(debitAccountNumber)).thenReturn(Optional.of(debitAccount));
+        Mockito.when(accountRepository.findByAccountNumber(creditAccountNumber)).thenReturn(Optional.of(creditAccount));
 
         // Calling the method under test
         TransferRequestDTO request = new TransferRequestDTO(debitAccountNumber, creditAccountNumber, transferAmount);
