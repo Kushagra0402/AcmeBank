@@ -33,15 +33,13 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public TransferResponseDTO transferBalance(TransferRequestDTO transferRequestDTO){
 
-        System.out.println("Entered transfer service "+transferRequestDTO);
-        log.info("Transfer service "+transferRequestDTO);
+
         String debitAccountNumber=transferRequestDTO.getDebitAccountNumber();
         String creditAccountNumber=transferRequestDTO.getCreditAccountNumber();
         Double amount=transferRequestDTO.getTransferAmount();
         Account debitAccount=accountRepository.findByAccountNumber(debitAccountNumber).orElseThrow(()->new CustomException("Debit Account Not Found"));
         Account creditAccount=accountRepository.findByAccountNumber(creditAccountNumber).orElseThrow(()->new CustomException("Credit Account Not Found"));
         Double balanceOfDebitAccount= getBalance(debitAccountNumber).getBalance();
-        System.out.println("balance of debit account"+balanceOfDebitAccount);
         if(balanceOfDebitAccount<amount){
             throw new CustomException("Balance of debit account is not enough");
         }
