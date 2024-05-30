@@ -16,9 +16,9 @@ http://localhost:8080/account-manager/88888888/balance.
 
 2. Transfer Money Api:
 
-This is a POST API and requires a JSON payload. Here is the format of the endpoint and payload. 
+This is a PUT API and requires a JSON payload. Here is the format of the endpoint and payload. 
 
-Endpoint: POST http://localhost:8080/account-manager/transfer
+Endpoint: PUT http://localhost:8080/account-manager/transfer
 JSON Payload: 
 {
     "debitAccountNumber" :"88888888",

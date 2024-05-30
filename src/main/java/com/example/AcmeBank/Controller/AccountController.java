@@ -28,7 +28,7 @@ public class AccountController {
         }
     }
 
-    @PostMapping("/account-manager/transfer")
+    @PutMapping("/account-manager/transfer")
     public ResponseEntity<TransferResponseDTO> transfer(
             @RequestBody TransferRequestDTO transferRequestDTO
             ){
